@@ -41,13 +41,13 @@ if __name__ == "__main__":
 
         generator = LLM(model=args.repo_id, tensor_parallel_size=1)
 
-        pass_1, pass_8, pass_16, pass_32 = [], [], [], []
+        pass_1, pass_2, pass_4, pass_8, pass_16, pass_32, pass_64, pass_128 = [], [], [], [], [], [], [], []
         for i in tqdm.tqdm(range(0, len(dataset), 128)):
             batch = dataset[i:i+128]
             batch_prompts = [item[0]["content"] for item in batch["prompt"]]
 
             batch_outputs = generator.generate(batch_prompts, SamplingParams(
-                max_tokens=3072, n=32, 
+                max_tokens=3072, n=128, 
                 temperature=0.6, top_p=0.95, 
             ))
             batch_outputs = [[output.text for output in outputs.outputs] for outputs in batch_outputs]
@@ -56,12 +56,20 @@ if __name__ == "__main__":
                 for output in outputs:
                     retval, _ = math_reward.compute_score(output, ground_truth)
                     retvals.append(retval)
-                pass_1.append(pass_at_k(32, sum(retvals), 1))
-                pass_8.append(pass_at_k(32, sum(retvals), 8))
-                pass_16.append(pass_at_k(32, sum(retvals), 16))
-                pass_32.append(pass_at_k(32, sum(retvals), 32))
+                pass_1.append(pass_at_k(128, sum(retvals), 1))
+                pass_2.append(pass_at_k(128, sum(retvals), 2))
+                pass_4.append(pass_at_k(128, sum(retvals), 4))
+                pass_8.append(pass_at_k(128, sum(retvals), 8))
+                pass_16.append(pass_at_k(128, sum(retvals), 16))
+                pass_32.append(pass_at_k(128, sum(retvals), 32))
+                pass_64.append(pass_at_k(128, sum(retvals), 64))
+                pass_128.append(pass_at_k(128, sum(retvals), 128))
 
         print("pass@1: {:.3f}".format(100*sum(pass_1)/len(pass_1)))
+        print("pass@2: {:.3f}".format(100*sum(pass_2)/len(pass_2)))
+        print("pass@4: {:.3f}".format(100*sum(pass_4)/len(pass_4)))
         print("pass@8: {:.3f}".format(100*sum(pass_8)/len(pass_8)))
         print("pass@16: {:.3f}".format(100*sum(pass_16)/len(pass_16)))
         print("pass@32: {:.3f}".format(100*sum(pass_32)/len(pass_32)))
+        print("pass@64: {:.3f}".format(100*sum(pass_64)/len(pass_64)))
+        print("pass@128: {:.3f}".format(100*sum(pass_128)/len(pass_128)))
