@@ -1,9 +1,7 @@
 import argparse
 import tqdm
 from utils import *
-import torch
 from datasets import load_dataset
-from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
 from verl.utils.reward_score import math_reward
 
