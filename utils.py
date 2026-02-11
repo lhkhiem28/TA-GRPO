@@ -13,7 +13,7 @@ def seed_everything(seed: int):
 
 def make_map_fn(split):
     def process_fn(example, index):
-        instruction_following = "You are a helpful AI assistant, designed to provide well-reasoned and detailed responses. You FIRST think about the reasoning process step by step and then provide the user with the answer. Please enclose your final answer in the box: \\boxed{}. Please stop generating immediately after outputting the box."
+        instruction_following = "You FIRST think about the reasoning process step by step and then provide the user with the answer. Please enclose your final answer in the box: \\boxed{}. Please stop generating immediately after outputting the box."
 
         question = example.pop("question")
         if len(question) == 0:

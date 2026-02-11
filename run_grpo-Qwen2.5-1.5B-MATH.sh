@@ -2,10 +2,10 @@ export WANDB_API_KEY="e9e462d100f1ec04aab88e70a25510f0f99d43a1"
 export ACCELERATE_LOG_LEVEL=info
 
 project_name="TA-GRPO"
-experiment_name="Qwen2.5-1.5B-MATH-A9-U"
+experiment_name="Qwen2.5-1.5B-MATH-GRPO"
 
-train_files="['../TA-GRPO-datasets/MATH-A9-U/train.parquet']"
-val_files="['../TA-GRPO-datasets/MATH-A9-U/test.parquet']"
+train_files="['../TA-GRPO-datasets/MATH/train.parquet']"
+val_files="['../TA-GRPO-datasets/MATH/test.parquet']"
 
 PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
@@ -13,7 +13,6 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     data.train_files="$train_files" \
     data.val_files="$val_files" \
     data.train_batch_size=128 \
-    data.shuffle=False \
     data.max_prompt_length=512 \
     data.max_response_length=3072 \
     data.filter_overlong_prompts=True \
@@ -45,13 +44,13 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     trainer.logger=['console','wandb'] \
     trainer.project_name="$project_name" \
     trainer.experiment_name="$experiment_name" \
-    trainer.test_freq=406 \
-    trainer.save_freq=406 $@
+    trainer.test_freq=57 \
+    trainer.save_freq=57 $@
 
 PYTHONUNBUFFERED=1 python -m verl.model_merger merge \
     --backend fsdp \
-    --local_dir checkpoints/${project_name}/${experiment_name}/global_step_406/actor \
-    --target_dir checkpoints/${project_name}/${experiment_name}/global_step_406/actor/huggingface
-python test.py --repo_id lhkhiem28/${project_name}-${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_406/actor/huggingface
+    --local_dir checkpoints/${project_name}/${experiment_name}/global_step_57/actor \
+    --target_dir checkpoints/${project_name}/${experiment_name}/global_step_57/actor/huggingface
+python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_57/actor/huggingface
 
-dos2unix eval.sh; bash eval.sh lhkhiem28/${project_name}-${experiment_name}
+dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}

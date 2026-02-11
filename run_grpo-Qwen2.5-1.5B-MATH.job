@@ -4,6 +4,6 @@
 #$ -pe smp 16
 #$ -q gpu@@lucy_a100
 #$ -l gpu=4
-#$ -N run_grpo-Qwen2.5-1.5B
+#$ -N run_grpo-Qwen2.5-1.5B-MATH
 module load cuda/12.1; conda activate PT
-dos2unix run_grpo-Qwen2.5-1.5B.sh; bash run_grpo-Qwen2.5-1.5B.sh
+dos2unix run_grpo-Qwen2.5-1.5B-MATH.sh; bash run_grpo-Qwen2.5-1.5B-MATH.sh
