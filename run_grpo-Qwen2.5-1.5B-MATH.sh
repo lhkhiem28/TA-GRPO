@@ -53,4 +53,4 @@ PYTHONUNBUFFERED=1 python -m verl.model_merger merge \
     --target_dir checkpoints/${project_name}/${experiment_name}/global_step_56/actor/huggingface
 python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_56/actor/huggingface
 
-dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}
+dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
