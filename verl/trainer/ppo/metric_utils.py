@@ -77,6 +77,12 @@ def _compute_response_info(batch: DataProto) -> dict[str, Any]:
     )
 
 
+def pool_by_uids(sequence_reward, uids):
+    pooled = defaultdict(list)
+    for item, id_ in zip(sequence_reward, uids):
+        pooled[id_].append(item)
+    return dict(pooled)
+
 def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> dict[str, Any]:
     """
     Computes various metrics from a batch of data for PPO training.
@@ -127,10 +133,13 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> dict[str,
     score_mean = torch.mean(non_aborted_sequence_score).detach().item()
     score_max = torch.max(non_aborted_sequence_score).detach().item()
     score_min = torch.min(non_aborted_sequence_score).detach().item()
-
     reward_mean = torch.mean(non_aborted_sequence_reward).detach().item()
     reward_max = torch.max(non_aborted_sequence_reward).detach().item()
     reward_min = torch.min(non_aborted_sequence_reward).detach().item()
+
+    pooled_sequence_reward = pool_by_uids(non_aborted_sequence_reward.cpu().numpy().tolist(), batch.non_tensor_batch["uid"].tolist())
+    pooled_sequence_reward = {k: all(x == 0 for x in v) for k, v in pooled_sequence_reward.items()}
+    all_zero_reward = np.mean(list(pooled_sequence_reward.values()))
 
     valid_adv = torch.masked_select(advantages, response_mask)
     valid_returns = torch.masked_select(returns, response_mask)
@@ -165,6 +174,7 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> dict[str,
         "critic/rewards/mean": reward_mean,
         "critic/rewards/max": reward_max,
         "critic/rewards/min": reward_min,
+        "critic/rewards/all_zero_reward": all_zero_reward,
         # adv
         "critic/advantages/mean": torch.mean(valid_adv).detach().item(),
         "critic/advantages/max": torch.max(valid_adv).detach().item(),

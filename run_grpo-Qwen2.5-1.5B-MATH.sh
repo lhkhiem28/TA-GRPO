@@ -44,13 +44,13 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     trainer.logger=['console','wandb'] \
     trainer.project_name="$project_name" \
     trainer.experiment_name="$experiment_name" \
-    trainer.test_freq=57 \
-    trainer.save_freq=57 $@
+    trainer.test_freq=56 \
+    trainer.save_freq=56 $@
 
 PYTHONUNBUFFERED=1 python -m verl.model_merger merge \
     --backend fsdp \
-    --local_dir checkpoints/${project_name}/${experiment_name}/global_step_57/actor \
-    --target_dir checkpoints/${project_name}/${experiment_name}/global_step_57/actor/huggingface
-python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_57/actor/huggingface
+    --local_dir checkpoints/${project_name}/${experiment_name}/global_step_56/actor \
+    --target_dir checkpoints/${project_name}/${experiment_name}/global_step_56/actor/huggingface
+python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_56/actor/huggingface
 
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}
