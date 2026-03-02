@@ -34,6 +34,7 @@ if __name__ == "__main__":
         dataset = load_dataset(
             data_source, args.task
         )
+
         dataset = dataset[args.split]
         dataset = dataset.map(function=make_map_fn(args.split), with_indices=True)
 
