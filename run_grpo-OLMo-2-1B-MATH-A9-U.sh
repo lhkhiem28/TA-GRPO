@@ -2,7 +2,7 @@ export WANDB_API_KEY="e9e462d100f1ec04aab88e70a25510f0f99d43a1"
 export ACCELERATE_LOG_LEVEL=info
 
 project_name="TA-GRPO"
-experiment_name="Llama-3.2-1B-MATH-A9-U-GRPO"
+experiment_name="OLMo-2-1B-MATH-A9-U-GRPO"
 
 train_files="['../TA-GRPO-datasets/MATH-A9-U/train.parquet']"
 val_files="['../TA-GRPO-datasets/MATH-A9-U/test.parquet']"
@@ -17,7 +17,7 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     data.max_response_length=3072 \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
-    actor_rollout_ref.model.path=meta-llama/Llama-3.2-1B-Instruct \
+    actor_rollout_ref.model.path=allenai/OLMo-2-0425-1B-Instruct \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.model.enable_gradient_checkpointing=True \
     actor_rollout_ref.actor.optim.lr=1e-6 \
@@ -29,7 +29,7 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     actor_rollout_ref.actor.ppo_mini_batch_size=128 \
     actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=8 \
     actor_rollout_ref.rollout.name=vllm \
-    actor_rollout_ref.rollout.gpu_memory_utilization=0.6 \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.8 \
     actor_rollout_ref.rollout.n=8 \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=8 \
     actor_rollout_ref.ref.fsdp_config.param_offload=True \
