@@ -4,6 +4,6 @@
 #$ -pe smp 16
 #$ -q gpu@@lucy_a100
 #$ -l gpu=4
-#$ -N run_grpo-OLMo-2-1B-MATH
+#$ -N run_grpo-Llama-3.2-1B-MATH
 module load cuda/12.1; conda activate PT
-dos2unix run_grpo-OLMo-2-1B-MATH.sh; bash run_grpo-OLMo-2-1B-MATH.sh
+dos2unix run_grpo-Llama-3.2-1B-MATH.sh; bash run_grpo-Llama-3.2-1B-MATH.sh
