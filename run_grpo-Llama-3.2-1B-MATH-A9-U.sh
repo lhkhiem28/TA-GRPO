@@ -2,7 +2,7 @@ export WANDB_API_KEY="e9e462d100f1ec04aab88e70a25510f0f99d43a1"
 export ACCELERATE_LOG_LEVEL=info
 
 project_name="TA-GRPO"
-experiment_name="Llama-3.2-1B-MATH-A9-U-GRPO"
+experiment_name="Llama-3.2-1B-MATH-A9-U-TA-GRPO"
 
 train_files="['../TA-GRPO-datasets/MATH-A9-U/train.parquet']"
 val_files="['../TA-GRPO-datasets/MATH-A9-U/test.parquet']"
